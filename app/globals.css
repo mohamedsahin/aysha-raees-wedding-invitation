@@ -680,9 +680,9 @@ section{ position:relative; z-index:1; }
 /* ---- hero load choreography ---- */
 .hero .anim{ opacity:0; }
 .hero.is-loaded .anim{ animation: rise 1.3s var(--ease) forwards; }
-/* End on filter:none (not blur(0)) so no filter layer is retained — a retained
-   filter re-rasterizes text and makes it blurry on mobile GPUs. */
-@keyframes rise{ from{ opacity:0; transform:translateY(26px); filter:blur(6px);} to{ opacity:1; transform:none; filter:none;} }
+/* No filter here on purpose: iOS Safari rasterizes filtered text to a low-res
+   layer and leaves it blurry after the animation. Fade + rise only. */
+@keyframes rise{ from{ opacity:0; transform:translateY(26px);} to{ opacity:1; transform:none;} }
 .hero.is-loaded .arch path{ animation: draw 2.6s var(--ease) forwards; }
 @keyframes draw{ to{ stroke-dashoffset:0; } }
 
