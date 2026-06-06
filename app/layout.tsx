@@ -7,6 +7,10 @@ import {
 } from "next/font/google";
 import { LanguageProvider } from "@/components/LanguageProvider";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { MusicPlayer } from "@/components/MusicPlayer";
+import { Petals } from "@/components/Petals";
+import { Ripples } from "@/components/Ripples";
+import { Intro } from "@/components/Intro";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -39,9 +43,9 @@ const amiri = Amiri({
 });
 
 export const metadata: Metadata = {
-  title: "Aysha & Raees · Wedding",
+  title: "Raees & Aysha · Wedding",
   description:
-    "Aysha Samiya & Raees Mohamed Ali — wedding invitation, August 2026.",
+    "Raees Mohamed Ali & Aysha Samiya — wedding invitation, August 2026.",
 };
 
 export const viewport: Viewport = {
@@ -64,8 +68,12 @@ export default function RootLayout({
     >
       <body>
         <LanguageProvider>
+          <Intro />
+          <Petals />
           <div className="page-frame" aria-hidden="true" />
           <LanguageToggle />
+          <Ripples />
+          <MusicPlayer />
           {children}
         </LanguageProvider>
       </body>

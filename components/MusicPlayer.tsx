@@ -1,0 +1,165 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+/**
+ * Soft background music for the invitation.
+ *
+ * Browsers block audio autoplay until the visitor interacts with the page, so
+ * we attempt to play on mount and — if that's refused — start on the first
+ * gesture (pointer / key / scroll / touch). A small floating control lets the
+ * guest mute or resume at any time, and the choice is remembered.
+ */
+
+const SRC = "/music/wedding-bgm.mp3";
+const VOLUME = 0.35;
+const MUTED_KEY = "ar_music_muted";
+
+export function MusicPlayer() {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [playing, setPlaying] = useState(false);
+  // Start "ready" hidden until we know the file loaded, so a missing file
+  // never leaves a dead button on screen.
+  const [available, setAvailable] = useState(false);
+
+  useEffect(() => {
+    const audio = new Audio(SRC);
+    audio.loop = true;
+    audio.volume = VOLUME;
+    audio.preload = "auto";
+    audioRef.current = audio;
+
+    const onCanPlay = () => setAvailable(true);
+    const onError = () => setAvailable(false);
+    audio.addEventListener("canplaythrough", onCanPlay);
+    audio.addEventListener("error", onError);
+
+    const startedMuted = (() => {
+      try {
+        return localStorage.getItem(MUTED_KEY) === "1";
+      } catch {
+        return false;
+      }
+    })();
+
+    // Broad set of first-interaction signals — whichever fires first makes the
+    // (already-running, muted) track audible, so sound kicks in the instant the
+    // visitor does anything (move the mouse, scroll, tap, key press...).
+    const gestureEvents = [
+      "pointerdown",
+      "pointermove",
+      "mousemove",
+      "keydown",
+      "scroll",
+      "touchstart",
+      "click",
+    ];
+    const removeGestureListeners = () => {
+      gestureEvents.forEach((e) => window.removeEventListener(e, onGesture));
+    };
+    const addGestureListeners = () => {
+      gestureEvents.forEach((e) =>
+        window.addEventListener(e, onGesture, { once: true, passive: true }),
+      );
+    };
+
+    // Force playback at load: browsers ALLOW autoplay when muted, so we start
+    // the track muted and unmute on the first interaction.
+    const forceAutoplay = () => {
+      audio.muted = true;
+      audio.volume = VOLUME;
+      audio.play().catch(() => {
+        // Even muted autoplay was refused — fall back to starting on gesture.
+        addGestureListeners();
+      });
+    };
+
+    const unmuteAndPlay = () => {
+      audio.muted = false;
+      audio.volume = VOLUME;
+      audio
+        .play()
+        .then(() => setPlaying(true))
+        .catch(() => setPlaying(false));
+    };
+
+    const onGesture = () => {
+      removeGestureListeners();
+      unmuteAndPlay();
+    };
+
+    if (!startedMuted) {
+      forceAutoplay();
+      addGestureListeners();
+    }
+
+    return () => {
+      removeGestureListeners();
+      audio.removeEventListener("canplaythrough", onCanPlay);
+      audio.removeEventListener("error", onError);
+      audio.pause();
+      audioRef.current = null;
+    };
+  }, []);
+
+  const toggle = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (playing) {
+      audio.pause();
+      setPlaying(false);
+      try {
+        localStorage.setItem(MUTED_KEY, "1");
+      } catch {
+        /* ignore */
+      }
+    } else {
+      audio.muted = false;
+      audio.volume = VOLUME;
+      audio
+        .play()
+        .then(() => setPlaying(true))
+        .catch(() => setPlaying(false));
+      try {
+        localStorage.setItem(MUTED_KEY, "0");
+      } catch {
+        /* ignore */
+      }
+    }
+  };
+
+  if (!available) return null;
+
+  return (
+    <button
+      className={`music-toggle${playing ? " is-playing" : ""}`}
+      onClick={toggle}
+      aria-label={playing ? "Pause music" : "Play music"}
+      aria-pressed={playing}
+    >
+      {playing ? (
+        // Equalizer bars (animated while playing)
+        <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
+          <rect className="bar b1" x="4" y="9" width="3" height="6" rx="1.5" />
+          <rect className="bar b2" x="10.5" y="6" width="3" height="12" rx="1.5" />
+          <rect className="bar b3" x="17" y="10" width="3" height="4" rx="1.5" />
+        </svg>
+      ) : (
+        // Muted speaker
+        <svg
+          className="ico"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.5}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M4 9v6h4l5 4V5L8 9H4z" />
+          <path d="M17 9l4 4M21 9l-4 4" />
+        </svg>
+      )}
+    </button>
+  );
+}

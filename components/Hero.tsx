@@ -11,12 +11,29 @@ export default function Hero() {
   const { t, tLines } = useLang();
   const [loaded, setLoaded] = useState(false);
 
-  // Trigger the entrance choreography after first paint.
+  // Choreograph the entrance to the intro: the names rise as the curtain opens.
+  // If the intro is skipped (reduced motion / repeat visit), animate at once.
   useEffect(() => {
-    const id = requestAnimationFrame(() =>
-      requestAnimationFrame(() => setLoaded(true)),
-    );
-    return () => cancelAnimationFrame(id);
+    const w = window as unknown as { __introRevealed?: boolean };
+    let fallback: ReturnType<typeof setTimeout>;
+    const start = () => {
+      setLoaded(true);
+      clearTimeout(fallback);
+      window.removeEventListener("intro-reveal", start);
+    };
+
+    if (w.__introRevealed) {
+      requestAnimationFrame(() => requestAnimationFrame(start));
+    } else {
+      window.addEventListener("intro-reveal", start, { once: true });
+      // Safety net in case the reveal signal never arrives.
+      fallback = setTimeout(start, 4000);
+    }
+
+    return () => {
+      window.removeEventListener("intro-reveal", start);
+      clearTimeout(fallback);
+    };
   }, []);
 
   return (
@@ -46,9 +63,9 @@ export default function Hero() {
         <span className="eyebrow hero-eyebrow anim d1">{t("hero_eyebrow")}</span>
 
         <div className="names">
-          <div className="nm script anim d2">{t("hero_bride")}</div>
+          <div className="nm script anim d2">{t("hero_groom")}</div>
           <div className="amp anim d3">&amp;</div>
-          <div className="nm script anim d3">{t("hero_groom")}</div>
+          <div className="nm script anim d3">{t("hero_bride")}</div>
         </div>
 
         <p className="hero-intro anim d4">

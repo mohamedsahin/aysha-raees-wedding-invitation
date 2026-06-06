@@ -1,5 +1,6 @@
 import Hero from "@/components/Hero";
 import Verse from "@/components/Verse";
+import Bond from "@/components/Bond";
 import Countdown from "@/components/Countdown";
 import Families from "@/components/Families";
 import Events from "@/components/Events";
@@ -13,6 +14,7 @@ export default function Page() {
       <Countdown />
       <Families />
       <Events />
+      <Bond />
       <Footer />
     </main>
   );

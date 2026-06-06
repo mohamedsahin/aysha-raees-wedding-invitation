@@ -25,6 +25,14 @@ export const content: Record<string, Entry> = {
   },
   verse_ref: { en: "Surah Ar-Rum · 30 : 21", ml: "സൂറത്ത് അർ-റൂം · 30 : 21" },
 
+  // ---- Bond ----
+  bond_eyebrow: { en: "Hand in hand", ml: "കൈകോർത്ത്" },
+  bond_title: { en: "Two Hearts, One Bond", ml: "രണ്ട് ഹൃദയങ്ങൾ, ഒരു ബന്ധം" },
+  bond_text: {
+    en: "Two souls, joined by faith and love,\nbeginning a lifetime as one.",
+    ml: "വിശ്വാസത്താലും സ്നേഹത്താലും ചേർന്ന്,\nഒരുമിച്ച് ഒരു ജീവിതയാത്ര.",
+  },
+
   // ---- Countdown ----
   count_eyebrow: { en: "Counting the days until", ml: "കാത്തിരിക്കുന്നു" },
   count_title: { en: "we say  I do", ml: "ആ ധന്യ മുഹൂർത്തം" },
@@ -75,9 +83,10 @@ export const content: Record<string, Entry> = {
   nikah_label: { en: "Nikah", ml: "നികാഹ്" },
   nikah_day: { en: "Thursday", ml: "വ്യാഴാഴ്ച" },
   nikah_date: { en: "6 August 2026", ml: "2026 ഓഗസ്റ്റ് 6" },
-  nikah_time: { en: "Daytime", ml: "പകൽ" },
-  nikah_venue: { en: "Majestic", ml: "മജസ്റ്റിക്" },
-  nikah_place: { en: "Triprayar", ml: "തൃപ്രയാർ" },
+  nikah_note: {
+    en: "Solemnised in the company of close family",
+    ml: "അടുത്ത കുടുംബാംഗങ്ങളുടെ സാന്നിധ്യത്തിൽ",
+  },
 
   recep_label: { en: "Reception", ml: "സ്വീകരണം" },
   recep_day: { en: "Friday", ml: "വെള്ളിയാഴ്ച" },
@@ -94,7 +103,7 @@ export const content: Record<string, Entry> = {
     en: "We would be honoured to share this blessed day with you",
     ml: "ഈ ധന്യ ദിനം നിങ്ങളോടൊപ്പം പങ്കിടാൻ ഞങ്ങൾ ആഗ്രഹിക്കുന്നു",
   },
-  footer_names: { en: "Aysha  &  Raees", ml: "ആയിഷ  &  റഈസ്" },
+  footer_names: { en: "Raees  &  Aysha", ml: "റഈസ്  &  ആയിഷ" },
   footer_dua_t: { en: "May Allah bless you both", ml: "അല്ലാഹു നിങ്ങളെ ഇരുവരെയും അനുഗ്രഹിക്കട്ടെ" },
 };
 

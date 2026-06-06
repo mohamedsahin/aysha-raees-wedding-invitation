@@ -22,26 +22,8 @@ export default function Families() {
         </Reveal>
 
         <div className="fam-grid">
-          {/* Bride */}
-          <Reveal className="fam-card" d={1}>
-            <div className="fam-label">{t("bride_label")}</div>
-            <div className="fam-name">{t("bride_name")}</div>
-            <p className="fam-line">
-              <Multi lines={tLines("bride_parents")} />
-            </p>
-            <p className="fam-line">
-              <Multi lines={tLines("bride_grand")} />
-            </p>
-            <div className="fam-addr">{t("bride_address")}</div>
-          </Reveal>
-
-          {/* centre ornament */}
-          <Reveal className="fam-mid" d={2}>
-            <div className="ring">&amp;</div>
-          </Reveal>
-
           {/* Groom */}
-          <Reveal className="fam-card" d={3}>
+          <Reveal className="fam-card" d={1}>
             <div className="fam-label">{t("groom_label")}</div>
             <div className="fam-name">{t("groom_name")}</div>
             <p className="fam-line">
@@ -51,6 +33,24 @@ export default function Families() {
               <Multi lines={tLines("groom_grand")} />
             </p>
             <div className="fam-addr">{t("groom_address")}</div>
+          </Reveal>
+
+          {/* centre ornament */}
+          <Reveal className="fam-mid" d={2}>
+            <div className="ring">&amp;</div>
+          </Reveal>
+
+          {/* Bride */}
+          <Reveal className="fam-card" d={3}>
+            <div className="fam-label">{t("bride_label")}</div>
+            <div className="fam-name">{t("bride_name")}</div>
+            <p className="fam-line">
+              <Multi lines={tLines("bride_parents")} />
+            </p>
+            <p className="fam-line">
+              <Multi lines={tLines("bride_grand")} />
+            </p>
+            <div className="fam-addr">{t("bride_address")}</div>
           </Reveal>
         </div>
       </div>

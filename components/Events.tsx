@@ -32,38 +32,8 @@ export default function Events() {
         </Reveal>
 
         <div className="ev-grid">
-          {/* Nikah */}
-          <Reveal className="ev-card" d={1}>
-            <svg
-              className="ev-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.3}
-              aria-hidden="true"
-            >
-              <path d="M12 21c5-3.5 7-7 7-10.5A4.5 4.5 0 0 0 12 6a4.5 4.5 0 0 0-7 4.5C5 14 7 17.5 12 21Z" />
-            </svg>
-            <div className="ev-label">{t("nikah_label")}</div>
-            <div className="ev-day">{t("nikah_day")}</div>
-            <div className="ev-date">{t("nikah_date")}</div>
-            <div className="ev-rule" />
-            <div className="ev-time">{t("nikah_time")}</div>
-            <div className="ev-venue">{t("nikah_venue")}</div>
-            <div className="ev-place">{t("nikah_place")}</div>
-            <a
-              className="ev-dir"
-              href={MAP_LINKS.nikah}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <PinIcon />
-              <span>{t("btn_directions")}</span>
-            </a>
-          </Reveal>
-
           {/* Reception */}
-          <Reveal className="ev-card" d={2}>
+          <Reveal className="ev-card" d={1}>
             <svg
               className="ev-icon"
               viewBox="0 0 24 24"
@@ -92,6 +62,25 @@ export default function Events() {
               <PinIcon />
               <span>{t("btn_directions")}</span>
             </a>
+          </Reveal>
+
+          {/* Nikah — date and a brief mention only */}
+          <Reveal className="ev-card" d={2}>
+            <svg
+              className="ev-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.3}
+              aria-hidden="true"
+            >
+              <path d="M12 21c5-3.5 7-7 7-10.5A4.5 4.5 0 0 0 12 6a4.5 4.5 0 0 0-7 4.5C5 14 7 17.5 12 21Z" />
+            </svg>
+            <div className="ev-label">{t("nikah_label")}</div>
+            <div className="ev-day">{t("nikah_day")}</div>
+            <div className="ev-date">{t("nikah_date")}</div>
+            <div className="ev-rule" />
+            <p className="ev-note">{t("nikah_note")}</p>
           </Reveal>
         </div>
       </div>
