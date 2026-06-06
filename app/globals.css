@@ -23,7 +23,8 @@
 
   --serif:  var(--font-serif), Georgia, serif;
   --script: var(--font-script), var(--font-serif), cursive;
-  --mal:    var(--font-mal), Georgia, serif;
+  --mal:        var(--font-mal), Georgia, serif;          /* body Malayalam (Manjari) */
+  --mal-script: var(--font-mal-script), var(--mal);       /* display Malayalam (Chilanka) */
   --amiri:  var(--font-amiri), serif;
 
   --maxw: 720px;
@@ -235,7 +236,7 @@ section{ position:relative; z-index:1; }
   line-height: .98;
   color: var(--gold-ink);
 }
-[data-lang="ml"] .script{ font-family: var(--mal); font-weight:500; line-height:1.15; }
+[data-lang="ml"] .script{ font-family: var(--mal-script); font-weight:400; line-height:1.2; }
 
 .section-title{
   font-family: var(--serif);
@@ -244,7 +245,7 @@ section{ position:relative; z-index:1; }
   line-height: 1.05;
   letter-spacing: .01em;
 }
-[data-lang="ml"] .section-title{ font-family:var(--mal); font-size:clamp(28px,7vw,46px); }
+[data-lang="ml"] .section-title{ font-family:var(--mal-script); font-weight:400; font-size:clamp(30px,7.5vw,50px); }
 
 /* gold divider with a centred diamond + shimmer */
 .divider{ display:flex; align-items:center; justify-content:center; gap:14px; margin:22px auto; width:min(220px,60%); }
@@ -580,7 +581,7 @@ section{ position:relative; z-index:1; }
   font-family:var(--script); font-size:clamp(40px,10vw,58px); color:var(--ink);
   line-height:1; margin-bottom:22px;
 }
-[data-lang="ml"] .fam-name{ font-family:var(--mal); font-weight:500; font-size:clamp(28px,8vw,42px); }
+[data-lang="ml"] .fam-name{ font-family:var(--mal-script); font-weight:400; font-size:clamp(30px,8.5vw,46px); }
 .fam-line{ color:var(--ink-soft); font-size:clamp(15px,3.8vw,18px); line-height:1.62; margin-bottom:16px; }
 [data-lang="ml"] .fam-line{ font-family:var(--mal); }
 .fam-addr{
@@ -617,7 +618,7 @@ section{ position:relative; z-index:1; }
 .ev-label{
   font-family:var(--script); font-size:clamp(38px,9vw,52px); color:var(--gold-ink); line-height:1; margin-bottom:6px;
 }
-[data-lang="ml"] .ev-label{ font-family:var(--mal); font-weight:500; font-size:clamp(28px,7vw,40px); }
+[data-lang="ml"] .ev-label{ font-family:var(--mal-script); font-weight:400; font-size:clamp(30px,7.5vw,44px); }
 .ev-day{ font-size:clamp(13px,3.4vw,15px); letter-spacing:.28em; text-transform:uppercase; color:var(--ink-faint); font-weight:600; margin-bottom:18px; }
 [data-lang="ml"] .ev-day{ letter-spacing:.08em; font-family:var(--mal); }
 .ev-date{ font-size:clamp(26px,6.5vw,36px); font-weight:500; color:var(--ink); line-height:1.1; }
@@ -661,7 +662,7 @@ section{ position:relative; z-index:1; }
   font-family:var(--script); font-size:clamp(58px,15vw,96px); color:var(--gold-light);
   line-height:1; margin:34px 0 30px;
 }
-[data-lang="ml"] .footer-names{ font-family:var(--mal); font-weight:500; font-size:clamp(40px,11vw,68px); }
+[data-lang="ml"] .footer-names{ font-family:var(--mal-script); font-weight:400; font-size:clamp(44px,12vw,74px); }
 .footer-dua{ direction:rtl; font-family:var(--amiri); font-size:clamp(24px,6vw,34px); color:var(--gold-light); margin-bottom:10px; }
 .footer-dua-t{ font-size:clamp(13px,3.4vw,15px); letter-spacing:.18em; text-transform:uppercase; color:rgba(231,205,134,.75); }
 [data-lang="ml"] .footer-dua-t{ letter-spacing:.05em; text-transform:none; font-family:var(--mal); }
@@ -679,7 +680,9 @@ section{ position:relative; z-index:1; }
 /* ---- hero load choreography ---- */
 .hero .anim{ opacity:0; }
 .hero.is-loaded .anim{ animation: rise 1.3s var(--ease) forwards; }
-@keyframes rise{ from{ opacity:0; transform:translateY(26px); filter:blur(6px);} to{ opacity:1; transform:none; filter:blur(0);} }
+/* End on filter:none (not blur(0)) so no filter layer is retained — a retained
+   filter re-rasterizes text and makes it blurry on mobile GPUs. */
+@keyframes rise{ from{ opacity:0; transform:translateY(26px); filter:blur(6px);} to{ opacity:1; transform:none; filter:none;} }
 .hero.is-loaded .arch path{ animation: draw 2.6s var(--ease) forwards; }
 @keyframes draw{ to{ stroke-dashoffset:0; } }
 

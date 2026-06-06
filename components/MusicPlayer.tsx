@@ -18,9 +18,10 @@ const MUTED_KEY = "ar_music_muted";
 export function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState(false);
-  // Start "ready" hidden until we know the file loaded, so a missing file
-  // never leaves a dead button on screen.
-  const [available, setAvailable] = useState(false);
+  // Show the control by default (so there's always a manual way to start the
+  // music — important on iOS, where audio won't preload until a gesture). Only
+  // hide it if the file genuinely fails to load.
+  const [available, setAvailable] = useState(true);
 
   useEffect(() => {
     const audio = new Audio(SRC);
@@ -29,9 +30,7 @@ export function MusicPlayer() {
     audio.preload = "auto";
     audioRef.current = audio;
 
-    const onCanPlay = () => setAvailable(true);
     const onError = () => setAvailable(false);
-    audio.addEventListener("canplaythrough", onCanPlay);
     audio.addEventListener("error", onError);
 
     const startedMuted = (() => {
@@ -52,6 +51,7 @@ export function MusicPlayer() {
       "keydown",
       "scroll",
       "touchstart",
+      "touchend",
       "click",
     ];
     const removeGestureListeners = () => {
@@ -80,7 +80,11 @@ export function MusicPlayer() {
       audio
         .play()
         .then(() => setPlaying(true))
-        .catch(() => setPlaying(false));
+        .catch(() => {
+          // Browser still refused — keep listeners armed for the next gesture.
+          setPlaying(false);
+          addGestureListeners();
+        });
     };
 
     const onGesture = () => {
@@ -95,7 +99,6 @@ export function MusicPlayer() {
 
     return () => {
       removeGestureListeners();
-      audio.removeEventListener("canplaythrough", onCanPlay);
       audio.removeEventListener("error", onError);
       audio.pause();
       audioRef.current = null;
