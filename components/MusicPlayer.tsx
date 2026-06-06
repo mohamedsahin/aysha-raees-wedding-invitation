@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useLang } from "./LanguageProvider";
 
 /**
  * Soft background music for the invitation.
@@ -16,12 +17,42 @@ const VOLUME = 0.35;
 const MUTED_KEY = "ar_music_muted";
 
 export function MusicPlayer() {
+  const { t } = useLang();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState(false);
   // Show the control by default (so there's always a manual way to start the
   // music — important on iOS, where audio won't preload until a gesture). Only
   // hide it if the file genuinely fails to load.
   const [available, setAvailable] = useState(true);
+  // After a beat (once the intro has lifted), invite the guest to play music.
+  const [invite, setInvite] = useState(false);
+
+  useEffect(() => {
+    const id = setTimeout(() => setInvite(true), 4200);
+    return () => clearTimeout(id);
+  }, []);
+
+  // Start (or restart) the music audibly from the beginning.
+  const playFromStart = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.muted = false;
+    audio.volume = VOLUME;
+    try {
+      audio.currentTime = 0;
+    } catch {
+      /* ignore */
+    }
+    audio
+      .play()
+      .then(() => setPlaying(true))
+      .catch(() => setPlaying(false));
+    try {
+      localStorage.setItem(MUTED_KEY, "0");
+    } catch {
+      /* ignore */
+    }
+  };
 
   useEffect(() => {
     const audio = new Audio(SRC);
@@ -77,6 +108,13 @@ export function MusicPlayer() {
     const unmuteAndPlay = () => {
       audio.muted = false;
       audio.volume = VOLUME;
+      // Muted autoplay has been advancing the track silently — rewind so the
+      // first thing the guest actually hears is the gentle opening.
+      try {
+        audio.currentTime = 0;
+      } catch {
+        /* ignore */
+      }
       audio
         .play()
         .then(() => setPlaying(true))
@@ -133,13 +171,40 @@ export function MusicPlayer() {
 
   if (!available) return null;
 
+  const showInvite = invite && !playing;
+
   return (
-    <button
-      className={`music-toggle${playing ? " is-playing" : ""}`}
-      onClick={toggle}
-      aria-label={playing ? "Pause music" : "Play music"}
-      aria-pressed={playing}
-    >
+    <>
+      {showInvite && (
+        <button
+          className="music-prompt"
+          onClick={playFromStart}
+          aria-label={t("music_prompt")}
+        >
+          <svg className="note" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M9 17V5l10-2v12"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.6}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <circle cx="6.5" cy="17" r="2.6" fill="currentColor" />
+            <circle cx="16.5" cy="15" r="2.6" fill="currentColor" />
+          </svg>
+          <span>{t("music_prompt")}</span>
+        </button>
+      )}
+
+      <button
+        className={`music-toggle${playing ? " is-playing" : ""}${
+          showInvite ? " attn" : ""
+        }`}
+        onClick={toggle}
+        aria-label={playing ? "Pause music" : "Play music"}
+        aria-pressed={playing}
+      >
       {playing ? (
         // Equalizer bars (animated while playing)
         <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
@@ -163,6 +228,7 @@ export function MusicPlayer() {
           <path d="M17 9l4 4M21 9l-4 4" />
         </svg>
       )}
-    </button>
+      </button>
+    </>
   );
 }

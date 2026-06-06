@@ -311,6 +311,52 @@ section{ position:relative; z-index:1; }
 }
 .music-toggle:hover{ transform:translateY(-1px); background:rgba(246,239,224,.95); }
 .music-toggle .ico{ width:20px; height:20px; }
+
+/* attention ring while the music invitation is showing */
+.music-toggle.attn::after{
+  content:""; position:absolute; inset:-3px; border-radius:999px;
+  border:1px solid rgba(184,138,58,.55); pointer-events:none;
+  animation:attn-ring 2.2s var(--ease) infinite;
+}
+@keyframes attn-ring{
+  0%{ transform:scale(1); opacity:.7; }
+  100%{ transform:scale(1.55); opacity:0; }
+}
+
+/* ---- "play our music" invitation ---- */
+.music-prompt{
+  position:fixed; right:30px; bottom:88px; z-index:50;
+  display:flex; align-items:center; gap:9px;
+  padding:10px 17px;
+  background:rgba(246,239,224,.94);
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+  border:1px solid rgba(184,138,58,.45);
+  border-radius:999px;
+  color:var(--ink); cursor:pointer; white-space:nowrap;
+  font-family:var(--serif); font-size:13.5px; letter-spacing:.04em;
+  box-shadow:0 10px 28px rgba(42,36,24,.14);
+  animation:prompt-in .6s var(--ease) both,
+            prompt-float 2.8s ease-in-out 1s infinite;
+}
+.music-prompt .note{ width:16px; height:16px; flex:none; color:var(--gold-ink); }
+[data-lang="ml"] .music-prompt{ font-family:var(--mal); }
+/* little caret pointing down toward the music button */
+.music-prompt::after{
+  content:""; position:absolute; right:20px; bottom:-5px;
+  width:10px; height:10px; background:rgba(246,239,224,.94);
+  border-right:1px solid rgba(184,138,58,.45);
+  border-bottom:1px solid rgba(184,138,58,.45);
+  transform:rotate(45deg);
+}
+@keyframes prompt-in{
+  from{ opacity:0; transform:translateY(10px) scale(.96); }
+  to{ opacity:1; transform:none; }
+}
+@keyframes prompt-float{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-4px); } }
+@media (prefers-reduced-motion: reduce){
+  .music-prompt{ animation:prompt-in .4s var(--ease) both; }
+  .music-toggle.attn::after{ animation:none; }
+}
 .music-toggle .bar{ fill:var(--gold-ink); transform-origin:center bottom; }
 .music-toggle.is-playing .b1{ animation:eq 1s var(--ease) infinite; }
 .music-toggle.is-playing .b2{ animation:eq 1s var(--ease) infinite .2s; }

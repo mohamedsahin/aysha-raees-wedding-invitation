@@ -16,6 +16,7 @@ export const content: Record<string, Entry> = {
   },
   hero_date: { en: "August 2026", ml: "ഓഗസ്റ്റ് 2026" },
   hero_scroll: { en: "Scroll", ml: "താഴേക്ക്" },
+  music_prompt: { en: "Play our music", ml: "സംഗീതം കേൾക്കൂ" },
 
   // ---- Verse ----
   verse_eyebrow: { en: "In the name of Allah", ml: "അല്ലാഹുവിന്റെ നാമത്തിൽ" },
