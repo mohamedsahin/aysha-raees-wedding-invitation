@@ -3,6 +3,7 @@ import { ImageResponse } from "next/og";
 // iOS home-screen / bookmark icon: gold "R & A" monogram in a ringed emerald
 // tile, echoing the intro and OG card.
 
+export const runtime = "edge";
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 

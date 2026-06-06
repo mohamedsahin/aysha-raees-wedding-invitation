@@ -2,7 +2,9 @@ import { ImageResponse } from "next/og";
 
 // Link-preview card shown when the invitation is shared (WhatsApp, iMessage,
 // Twitter/X, Facebook, etc.). Rendered on the fly so the text stays crisp.
+// Runs on the edge runtime — that's where @vercel/og + local-asset fonts work.
 
+export const runtime = "edge";
 export const alt = "Raees & Aysha — Wedding Invitation, August 2026";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

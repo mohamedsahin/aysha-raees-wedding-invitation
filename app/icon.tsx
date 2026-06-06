@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 
 // Browser-tab favicon: a gold ampersand on deep emerald, matching the palette.
 
+export const runtime = "edge";
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
 
