@@ -5,10 +5,15 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
 import { content, type Lang } from "@/lib/content";
+
+// How long the text fades out before the language swaps (kept in sync with the
+// `main` opacity transition in globals.css).
+const SWITCH_MS = 260;
 
 type LangContextValue = {
   lang: Lang;
@@ -24,6 +29,8 @@ const STORAGE_KEY = "ar_lang";
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("en");
+  const langRef = useRef<Lang>("en");
+  const timer = useRef<number | null>(null);
 
   // Restore saved preference after mount (avoids SSR/hydration mismatch).
   useEffect(() => {
@@ -38,6 +45,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   // Reflect language on <html> so the [data-lang] CSS hooks (fonts, spacing)
   // apply, and persist the choice.
   useEffect(() => {
+    langRef.current = lang;
     document.documentElement.setAttribute("data-lang", lang);
     document.documentElement.setAttribute("lang", lang === "ml" ? "ml" : "en");
     try {
@@ -47,10 +55,46 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   }, [lang]);
 
-  const setLang = useCallback((l: Lang) => setLangState(l), []);
-  const toggle = useCallback(
-    () => setLangState((prev) => (prev === "en" ? "ml" : "en")),
+  useEffect(
+    () => () => {
+      if (timer.current) window.clearTimeout(timer.current);
+    },
     [],
+  );
+
+  // Crossfade between languages: fade the text out, swap while it's hidden (so
+  // the font/length reflow isn't visible), then fade back in. Falls back to an
+  // instant swap when the user prefers reduced motion.
+  const transition = useCallback((next: Lang) => {
+    const root = document.documentElement;
+    if (next === langRef.current) return;
+    langRef.current = next;
+
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setLangState(next);
+      return;
+    }
+
+    if (timer.current) window.clearTimeout(timer.current);
+    root.setAttribute("data-lang-switching", "1"); // fade out (CSS)
+    timer.current = window.setTimeout(() => {
+      setLangState(next); // swap text while invisible
+      // Wait for the new text to paint, then fade back in.
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() =>
+          root.setAttribute("data-lang-switching", "0"),
+        ),
+      );
+    }, SWITCH_MS);
+  }, []);
+
+  const setLang = useCallback((l: Lang) => transition(l), [transition]);
+  const toggle = useCallback(
+    () => transition(langRef.current === "en" ? "ml" : "en"),
+    [transition],
   );
   const t = useCallback(
     (key: string) => {

@@ -44,6 +44,21 @@ body{
   -webkit-font-smoothing: antialiased;
 }
 
+/* Smooth crossfade when switching language. The text fades out, swaps while
+   hidden (so the font/length reflow isn't visible), then fades back in.
+   Driven by [data-lang-switching] set in LanguageProvider. */
+main{ transition: opacity .26s var(--ease), filter .26s var(--ease), transform .26s var(--ease); }
+html[data-lang-switching="1"] main{ opacity:0; filter:blur(3px); transform:translateY(6px); }
+.music-prompt span, .lang-toggle .lbl{ transition: opacity .26s var(--ease); }
+html[data-lang-switching="1"] .music-prompt span,
+html[data-lang-switching="1"] .lang-toggle .lbl{ opacity:0; }
+@media (prefers-reduced-motion: reduce){
+  main{ transition:none; }
+  html[data-lang-switching="1"] main{ opacity:1; filter:none; transform:none; }
+  html[data-lang-switching="1"] .music-prompt span,
+  html[data-lang-switching="1"] .lang-toggle .lbl{ opacity:1; }
+}
+
 /* subtle grain / vignette wash over whole page */
 body::before{
   content:""; position:fixed; inset:0; pointer-events:none; z-index:0;

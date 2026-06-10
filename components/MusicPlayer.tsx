@@ -180,6 +180,7 @@ export function MusicPlayer() {
           className="music-prompt"
           onClick={playFromStart}
           aria-label={t("music_prompt")}
+          data-track="music-prompt"
         >
           <svg className="note" viewBox="0 0 24 24" aria-hidden="true">
             <path
@@ -204,6 +205,7 @@ export function MusicPlayer() {
         onClick={toggle}
         aria-label={playing ? "Pause music" : "Play music"}
         aria-pressed={playing}
+        data-track="music-toggle"
       >
       {playing ? (
         // Equalizer bars (animated while playing)

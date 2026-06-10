@@ -7,11 +7,7 @@ import {
   Amiri,
 } from "next/font/google";
 import { LanguageProvider } from "@/components/LanguageProvider";
-import { LanguageToggle } from "@/components/LanguageToggle";
-import { MusicPlayer } from "@/components/MusicPlayer";
-import { Petals } from "@/components/Petals";
-import { Ripples } from "@/components/Ripples";
-import { Intro } from "@/components/Intro";
+import { SiteChrome } from "@/components/SiteChrome";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -102,12 +98,7 @@ export default function RootLayout({
     >
       <body>
         <LanguageProvider>
-          <Intro />
-          <Petals />
-          <div className="page-frame" aria-hidden="true" />
-          <LanguageToggle />
-          <Ripples />
-          <MusicPlayer />
+          <SiteChrome />
           {children}
         </LanguageProvider>
       </body>

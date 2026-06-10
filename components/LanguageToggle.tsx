@@ -5,7 +5,12 @@ import { useLang } from "./LanguageProvider";
 export function LanguageToggle() {
   const { lang, toggle } = useLang();
   return (
-    <button className="lang-toggle" onClick={toggle} aria-label="Switch language">
+    <button
+      className="lang-toggle"
+      onClick={toggle}
+      aria-label="Switch language"
+      data-track="language-toggle"
+    >
       <svg
         className="globe"
         viewBox="0 0 24 24"
