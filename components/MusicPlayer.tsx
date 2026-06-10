@@ -12,7 +12,7 @@ import { useLang } from "./LanguageProvider";
  * guest mute or resume at any time, and the choice is remembered.
  */
 
-const SRC = "/music/wedding-bgm.mp3";
+const SRC = "/music/music.mp3";
 const VOLUME = 0.35;
 const MUTED_KEY = "ar_music_muted";
 

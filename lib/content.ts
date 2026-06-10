@@ -65,8 +65,8 @@ export const content: Record<string, Entry> = {
   groom_label: { en: "The Groom", ml: "വരൻ" },
   groom_name: { en: "Raees Mohamed Ali", ml: "റഈസ് മുഹമ്മദ് അലി" },
   groom_parents: {
-    en: "Son of\nC Mohamed Ali  &  Ramla Mohamed Ali",
-    ml: "മകൻ\nസി. മുഹമ്മദ് അലി  &  റംല മുഹമ്മദ് അലി",
+    en: "C Mohamed Ali  &  Ramla Mohamed Ali",
+    ml: "സി. മുഹമ്മദ് അലി  &  റംല മുഹമ്മദ് അലി",
   },
   groom_grand: {
     en: "Grandson of\nLate Anjukandath Yusaf Haji  &  Aysha Kutty Chinganath\nand  Late Mohammedunni Paliyath  &  Fathima Nariyammal",
@@ -92,7 +92,7 @@ export const content: Record<string, Entry> = {
   recep_label: { en: "Reception", ml: "സ്വീകരണം" },
   recep_day: { en: "Friday", ml: "വെള്ളിയാഴ്ച" },
   recep_date: { en: "7 August 2026", ml: "2026 ഓഗസ്റ്റ് 7" },
-  recep_time: { en: "5:00  –  9:00 in the evening", ml: "വൈകീട്ട് 5:00  –  9:00" },
+  recep_time: { en: "5:30  –  9:00 in the evening", ml: "വൈകീട്ട് 5:30  –  9:00" },
   recep_venue: { en: "Vanneri Palace", ml: "വന്നേരി പാലസ്" },
   recep_place: { en: "", ml: "" },
 
