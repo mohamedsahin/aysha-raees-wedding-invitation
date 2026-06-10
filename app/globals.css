@@ -17,6 +17,7 @@
   --gold-soft:  #ca9f54;
   --gold-light: #e7cd86;
   --maroon:     #5e2126;
+  --wine:       #541923;
   --ink:        #2a2418;
   --ink-soft:   #6a5f49;
   --ink-faint:  #9b8f73;
@@ -173,22 +174,19 @@ body::before{
 }
 @keyframes ring-draw{ to{ stroke-dashoffset:0; } }
 
-.intro-initials{
-  position:absolute; inset:0;
-  display:flex; align-items:center; justify-content:center; gap:6px;
-  font-family:var(--script); color:var(--gold-ink);
-  font-size:52px; line-height:1;
+.intro-mono{
+  position:absolute; left:50%; top:50%;
+  width:52%; height:auto;
+  transform:translate(-50%,-50%) scale(.72);
+  opacity:0;
+  filter:drop-shadow(0 1px 12px rgba(231,205,134,.5));
+  animation:mono-in 1.05s var(--ease) .7s forwards;
 }
-.intro-initials span{
-  opacity:0; transform:translateY(9px);
-  animation:mark-in .9s var(--ease) forwards;
+@keyframes mono-in{
+  0%{   opacity:0; transform:translate(-50%,-50%) scale(.72); }
+  55%{  opacity:1; }
+  100%{ opacity:1; transform:translate(-50%,-50%) scale(1); }
 }
-.intro-initials .i-a{ animation-delay:.75s; }
-.intro-initials .i-amp{
-  font-family:var(--serif); font-style:italic; font-size:24px;
-  color:var(--gold); margin:0 1px; animation-delay:.95s;
-}
-.intro-initials .i-r{ animation-delay:1.02s; }
 @keyframes mark-in{ to{ opacity:1; transform:none; } }
 
 .intro-sub{
@@ -367,8 +365,46 @@ section{ position:relative; z-index:1; }
 }
 
 /* ============================================================
-   HERO
+   HERO — floral sprays (bloom from buds on load)
    ============================================================ */
+/* crown shares the arch's box so it rests exactly on the arch apex */
+.arch-florals{
+  position:absolute; top:50%; left:50%;
+  width:min(330px,82vw); height:auto;
+  transform:translate(-50%,-54%);
+  z-index:1; pointer-events:none; overflow:visible;
+  filter:drop-shadow(0 5px 12px rgba(42,36,24,.13));
+}
+/* corner sprays */
+.hero-florals{
+  position:absolute; inset:0; z-index:1; pointer-events:none; overflow:hidden;
+}
+.floral{
+  position:absolute; width:clamp(130px,22vw,260px); height:auto;
+  filter:drop-shadow(0 6px 14px rgba(42,36,24,.12));
+}
+.floral .floral-svg{ display:block; width:100%; height:auto; overflow:visible; }
+.floral.tl{ top:-10px; left:-10px; }
+.floral.br{ right:-10px; bottom:-10px; transform:rotate(180deg); }
+
+/* each blossom/leaf scales from a tiny bud to full bloom once the hero loads */
+.hero .item{
+  transform-box:fill-box; transform-origin:center;
+  opacity:0; transform:scale(.05);
+}
+.hero.is-loaded .item{
+  animation:bloom 1s var(--ease) var(--d,0s) forwards;
+}
+@keyframes bloom{
+  0%{   opacity:0; transform:scale(.05); }
+  45%{  opacity:1; }
+  72%{  transform:scale(1.06); }
+  100%{ opacity:1; transform:scale(1); }
+}
+@media (prefers-reduced-motion: reduce){
+  .hero .item{ opacity:1; transform:none; animation:none; }
+}
+
 .hero{
   min-height:100svh;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -494,43 +530,14 @@ section{ position:relative; z-index:1; }
   pointer-events:none;
 }
 
-/* self-tracing gold emblem */
-.bond-svg{
-  position:relative; display:block; width:100%; height:auto; overflow:visible;
-  filter:drop-shadow(0 1px 10px rgba(231,205,134,.45));
-}
-.bond-svg path,
-.bond-svg circle{
-  fill:none; stroke:url(#bond-gold);
-  stroke-linecap:round; stroke-linejoin:round;
-  vector-effect:non-scaling-stroke;
-  stroke-dasharray:1;
-}
-.bond-svg .m-base{ stroke-width:2.3; }
-.bond-svg .m-minaret{ stroke-width:2.1; }
-.bond-svg .m-dome{ stroke-width:2.2; }
-.bond-svg .m-door{ stroke-width:1.5; }
-.bond-svg .m-crescent{ stroke-width:1.9; }
-.bond-svg .m-dot{ fill:url(#bond-gold); stroke:none; }
-
-/* the mosque builds bottom-to-top within the scroll-driven --draw (0→1) */
-.bond-svg .m-base{
-  stroke-dashoffset:calc(1 - clamp(0, var(--draw,0) / 0.42, 1));
-}
-.bond-svg .m-minaret{
-  stroke-dashoffset:calc(1 - clamp(0, (var(--draw,0) - 0.15) / 0.35, 1));
-}
-.bond-svg .m-dome{
-  stroke-dashoffset:calc(1 - clamp(0, (var(--draw,0) - 0.36) / 0.30, 1));
-}
-.bond-svg .m-door{
-  stroke-dashoffset:calc(1 - clamp(0, (var(--draw,0) - 0.52) / 0.24, 1));
-}
-.bond-svg .m-crescent{
-  stroke-dashoffset:calc(1 - clamp(0, (var(--draw,0) - 0.68) / 0.22, 1));
-}
-.bond-svg .m-dot{
-  opacity:clamp(0, (var(--draw,0) - 0.86) * 7, 1);
+/* monogram, revealed top→bottom by the scroll-driven --draw (0→1) */
+.bond-mono{
+  display:block; width:min(210px,54vw); height:auto; margin:0 auto;
+  filter:drop-shadow(0 1px 12px rgba(231,205,134,.45));
+  -webkit-mask-image:linear-gradient(to bottom,
+    #000 calc(var(--draw,0) * 112%), transparent calc(var(--draw,0) * 112% + 6%));
+  mask-image:linear-gradient(to bottom,
+    #000 calc(var(--draw,0) * 112%), transparent calc(var(--draw,0) * 112% + 6%));
 }
 
 .bond-title{ color:var(--gold-ink); margin-top:14px; }
@@ -550,7 +557,7 @@ section{ position:relative; z-index:1; }
    VERSE  (emerald feature band)
    ============================================================ */
 .verse{
-  background: var(--emerald);
+  background: var(--wine);
   color: var(--cream);
   text-align:center;
   padding: clamp(76px,14vw,128px) 0;
@@ -564,21 +571,21 @@ section{ position:relative; z-index:1; }
 .verse .wrap{ position:relative; z-index:3; }
 .verse .eyebrow{ color:var(--gold-light); }
 
-/* ---- flowing emerald velvet ---- */
+/* ---- flowing wine-red velvet ---- */
 .velvet{
   position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden;
   background:
-    radial-gradient(115% 80% at 18% 8%,  #17593f, transparent 55%),
-    radial-gradient(120% 90% at 86% 26%, #0b3326, transparent 55%),
-    radial-gradient(110% 85% at 62% 105%, #0a2a20, transparent 60%),
-    var(--emerald);
+    radial-gradient(115% 80% at 18% 8%,  #7c2733, transparent 55%),
+    radial-gradient(120% 90% at 86% 26%, #45151d, transparent 55%),
+    radial-gradient(110% 85% at 62% 105%, #2c0d13, transparent 60%),
+    var(--wine);
 }
-/* slow drifting light, like a sheen moving over folded velvet */
+/* slow drifting light, like a silky sheen moving over folded velvet */
 .velvet::before{
   content:""; position:absolute; inset:-25%;
   background:
-    radial-gradient(38% 30% at 30% 35%, rgba(126,240,191,.12), transparent 70%),
-    radial-gradient(40% 32% at 72% 60%, rgba(231,205,134,.10), transparent 72%);
+    radial-gradient(40% 32% at 30% 32%, rgba(255,176,168,.14), transparent 70%),
+    radial-gradient(42% 34% at 72% 62%, rgba(231,205,134,.12), transparent 72%);
   animation:velvet-flow 16s ease-in-out infinite alternate;
 }
 /* fine velvet grain */
@@ -592,58 +599,8 @@ section{ position:relative; z-index:1; }
   100%{ transform:translate(10%,8%)  rotate(4deg); }
 }
 
-/* ---- scattered jewels ---- */
-.gems{ position:absolute; inset:0; z-index:1; pointer-events:none; }
-.gem{
-  position:absolute; left:var(--x); top:var(--y);
-  width:var(--size); height:var(--size);
-  transform:rotate(var(--rot,0deg));
-  background:
-    radial-gradient(circle at 50% 30%, rgba(255,255,255,.92), rgba(255,255,255,0) 44%),
-    conic-gradient(from 205deg,
-      var(--c3), var(--c1) 12%, var(--c2) 26%, var(--c3) 40%,
-      var(--c1) 55%, var(--c2) 70%, var(--c3) 84%, var(--c1) 96%, var(--c3));
-  filter:
-    drop-shadow(0 3px 5px rgba(0,0,0,.42))
-    drop-shadow(0 0 7px rgba(255,255,255,.10));
-  animation:gem-float var(--fdur,8s) ease-in-out var(--fdelay,0s) infinite;
-}
-/* specular twinkle */
-.gem::after{
-  content:""; position:absolute; left:46%; top:28%;
-  width:42%; height:42%;
-  transform:translate(-50%,-50%);
-  background:#fff;
-  clip-path:polygon(50% 0,57% 43%,100% 50%,57% 57%,50% 100%,43% 57%,0 50%,43% 43%);
-  opacity:0;
-  animation:gem-twinkle var(--tdur,3s) ease-in-out var(--tdelay,0s) infinite;
-}
-/* cuts */
-.cut-round  { border-radius:50%; }
-.cut-cushion{ border-radius:30%; }
-.cut-oval   { border-radius:50%; height:calc(var(--size)*1.32); }
-.cut-pear   { height:calc(var(--size)*1.18);
-  clip-path:polygon(50% 0,68% 9%,86% 30%,94% 58%,80% 86%,50% 100%,20% 86%,6% 58%,14% 30%,32% 9%); }
-.cut-marquise{ width:calc(var(--size)*0.7); height:calc(var(--size)*1.5);
-  clip-path:polygon(50% 0,62% 26%,100% 50%,62% 74%,50% 100%,38% 74%,0 50%,38% 26%); }
-
-@keyframes gem-float{
-  0%,100%{ transform:translateY(0) rotate(var(--rot,0deg)); }
-  50%{     transform:translateY(-11px) rotate(calc(var(--rot,0deg) + 4deg)); }
-}
-@keyframes gem-twinkle{
-  0%,100%{ opacity:.12; transform:translate(-50%,-50%) scale(.55); }
-  50%{     opacity:.95; transform:translate(-50%,-50%) scale(1.1); }
-}
-
-@media (max-width:640px){
-  .gems{ opacity:.78; }
-  .gems .gem:nth-child(3n){ display:none; }
-}
 @media (prefers-reduced-motion: reduce){
   .velvet::before{ animation:none; }
-  .gem{ animation:none; }
-  .gem::after{ animation:none; opacity:.5; }
 }
 .verse-arabic{
   direction:rtl; font-family:var(--amiri);
@@ -798,7 +755,7 @@ section{ position:relative; z-index:1; }
 .rose-stage canvas:active{ cursor:grabbing; }
 
 .footer{
-  background:var(--emerald); color:var(--cream); text-align:center;
+  background:var(--wine); color:var(--cream); text-align:center;
   padding: clamp(84px,15vw,140px) 0 clamp(60px,10vw,90px);
   position:relative; overflow:hidden; isolation:isolate;
 }

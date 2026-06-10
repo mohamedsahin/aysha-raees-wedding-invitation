@@ -9,7 +9,7 @@ export default function Footer() {
   const { t } = useLang();
   return (
     <section className="footer" data-screen-label="Footer">
-      <GemVelvet count={14} />
+      <GemVelvet />
 
       <div className="wrap">
         <Reveal as="span" className="eyebrow">

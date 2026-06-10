@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 /**
  * Cinematic opening sequence.
  *
- * A gold "A & R" monogram draws itself inside a self-tracing ring, then the
+ * The couple's gold monogram fades in inside a self-tracing ring, then the
  * cream screen parts like a curtain to reveal the invitation beneath. Scroll is
  * locked for the ~2.2s reveal. Visitors who prefer reduced motion skip straight
  * to the page.
@@ -66,11 +66,8 @@ export function Intro() {
             <circle className="r-out" cx="100" cy="100" r="74" />
             <circle className="r-in" cx="100" cy="100" r="66" />
           </svg>
-          <div className="intro-initials">
-            <span className="i-a">R</span>
-            <span className="i-amp">&amp;</span>
-            <span className="i-r">A</span>
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="intro-mono" src="/monography.png" alt="" />
         </div>
         <div className="intro-sub">August 2026</div>
       </div>

@@ -3,6 +3,7 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import { useLang } from "./LanguageProvider";
 import { Multi } from "./Reveal";
+import { HeroFlorals } from "./HeroFlorals";
 import { ARABIC } from "@/lib/content";
 
 const archVar = (len: number) => ({ "--len": len }) as CSSProperties;
@@ -41,6 +42,8 @@ export default function Hero() {
       className={`hero${loaded ? " is-loaded" : ""}`}
       data-screen-label="Hero"
     >
+      <HeroFlorals />
+
       <svg
         className="arch"
         viewBox="0 0 300 380"
