@@ -191,7 +191,7 @@ body::before{
 
 .intro-mono{
   position:absolute; left:50%; top:50%;
-  width:52%; height:auto;
+  height:62%; width:auto;
   transform:translate(-50%,-50%) scale(.72);
   opacity:0;
   filter:drop-shadow(0 1px 12px rgba(231,205,134,.5));
@@ -529,30 +529,64 @@ section{ position:relative; z-index:1; }
 /* ============================================================
    BOND  (scroll-drawn clasped-hands sketch)
    ============================================================ */
-.bond{ position:relative; background:var(--cream); min-height:240vh; }
-.bond-sticky{
-  position:sticky; top:0; min-height:100svh;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  text-align:center; padding:84px 28px;
+.bond{
+  position:relative; background:var(--cream);
+  display:flex; flex-direction:column; align-items:center;
+  text-align:center; padding:clamp(80px,14vw,132px) 28px;
 }
 .bond-eyebrow{ margin-bottom:4px; }
 
-.bond-art{ position:relative; width:min(360px,80vw); margin:16px auto 8px; }
+.bond-art{ position:relative; margin:18px auto 10px; }
 /* soft warm glow behind the emblem */
 .bond-art::before{
-  content:""; position:absolute; inset:-14% -16%;
+  content:""; position:absolute; inset:-22% -45%; z-index:-1;
   background:radial-gradient(closest-side, rgba(231,205,134,.34), transparent 72%);
   pointer-events:none;
 }
-
-/* monogram, revealed top→bottom by the scroll-driven --draw (0→1) */
 .bond-mono{
-  display:block; width:min(210px,54vw); height:auto; margin:0 auto;
+  display:block; width:auto; height:clamp(120px,20vw,176px); margin:0 auto;
   filter:drop-shadow(0 1px 12px rgba(231,205,134,.45));
-  -webkit-mask-image:linear-gradient(to bottom,
-    #000 calc(var(--draw,0) * 112%), transparent calc(var(--draw,0) * 112% + 6%));
-  mask-image:linear-gradient(to bottom,
-    #000 calc(var(--draw,0) * 112%), transparent calc(var(--draw,0) * 112% + 6%));
+}
+
+/* ---- "written-in" reveal for the monogram ---- */
+/* keep the wrapper static; the children do the animating on .in */
+.bond-art.reveal{ opacity:1; transform:none; transition:none; }
+.bond-art .bond-mono{ opacity:0; }
+.bond-art.in .bond-mono{ animation:mono-write 1.5s var(--ease) .05s forwards; }
+
+/* gold foil-shimmer that sweeps across once, masked to the glyph */
+.bond-shine{
+  position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(100deg,
+    transparent 42%, rgba(255,255,255,.92) 50%, transparent 58%);
+  background-size:260% 100%; background-position:130% 0;
+  -webkit-mask:url(/name.svg) center / contain no-repeat;
+  mask:url(/name.svg) center / contain no-repeat;
+  mix-blend-mode:screen; opacity:0;
+}
+.bond-art.in .bond-shine{ animation:mono-shine 1.6s var(--ease) .75s forwards; }
+
+@keyframes mono-write{
+  0%{
+    opacity:0; clip-path:inset(0 100% 0 0);
+    transform:translateY(10px) scale(.96);
+    filter:drop-shadow(0 1px 12px rgba(231,205,134,.45)) blur(3px);
+  }
+  60%{ opacity:1; }
+  100%{
+    opacity:1; clip-path:inset(0 0 0 0);
+    transform:translateY(0) scale(1);
+    filter:drop-shadow(0 1px 12px rgba(231,205,134,.45)) blur(0);
+  }
+}
+@keyframes mono-shine{
+  0%{   background-position:130% 0; opacity:0; }
+  25%{  opacity:1; }
+  100%{ background-position:-130% 0; opacity:0; }
+}
+@media (prefers-reduced-motion: reduce){
+  .bond-art .bond-mono{ opacity:1; clip-path:none; }
+  .bond-shine{ display:none; }
 }
 
 .bond-title{ color:var(--gold-ink); margin-top:14px; }
@@ -562,11 +596,6 @@ section{ position:relative; z-index:1; }
   font-size:clamp(15px,4vw,19px); line-height:1.6;
 }
 [data-lang="ml"] .bond-text{ font-family:var(--mal); font-style:normal; }
-
-@media (prefers-reduced-motion: reduce){
-  .bond{ min-height:auto; }
-  .bond-sticky{ position:static; min-height:auto; padding:clamp(76px,14vw,128px) 28px; }
-}
 
 /* ============================================================
    VERSE  (emerald feature band)

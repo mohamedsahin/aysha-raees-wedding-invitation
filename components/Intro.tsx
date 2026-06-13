@@ -67,7 +67,7 @@ export function Intro() {
             <circle className="r-in" cx="100" cy="100" r="66" />
           </svg>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="intro-mono" src="/monography.png" alt="" />
+          <img className="intro-mono" src="/name.svg" alt="" />
         </div>
         <div className="intro-sub">August 2026</div>
       </div>
