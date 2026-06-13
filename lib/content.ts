@@ -69,8 +69,8 @@ export const content: Record<string, Entry> = {
     ml: "സി. മുഹമ്മദ് അലി  &  റംല മുഹമ്മദ് അലി",
   },
   groom_grand: {
-    en: "Grandson of\nLate Anjukandath Yusaf Haji  &  Aysha Kutty Chinganath\nand  Late Mohammedunni Paliyath  &  Fathima Nariyammal",
-    ml: "പേരക്കുട്ടി\nപരേതനായ അഞ്ചുകണ്ടത്ത് യൂസഫ് ഹാജി  &  ആയിഷക്കുട്ടി ചിങ്ങനാത്ത്\nഒപ്പം  പരേതനായ മുഹമ്മദുണ്ണി പാലിയത്ത്  &  ഫാത്തിമ നരിയമ്മൽ",
+    en: "Grandson of\nLate Anjukandath Yusaf Haji  &  Late Aysha Kutty Chinganath\nand  Late Mohammedunni Paliyath  &  Late Fathima Nariyammal",
+    ml: "പേരക്കുട്ടി\nപരേതനായ അഞ്ചുകണ്ടത്ത് യൂസഫ് ഹാജി  &  പരേതയായ ആയിഷക്കുട്ടി ചിങ്ങനാത്ത്\nഒപ്പം  പരേതനായ മുഹമ്മദുണ്ണി പാലിയത്ത്  &  പരേതയായ ഫാത്തിമ നരിയമ്മൽ",
   },
   groom_address: {
     en: "Chinganath House · P.O. Punnayoor",
