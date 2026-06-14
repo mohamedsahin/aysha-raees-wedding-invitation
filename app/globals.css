@@ -753,7 +753,7 @@ section{ position:relative; z-index:1; }
 .ev-date{ font-size:clamp(26px,6.5vw,36px); font-weight:500; color:var(--ink); line-height:1.1; }
 [data-lang="ml"] .ev-date{ font-family:var(--mal); }
 .ev-rule{ width:46px; height:1px; background:var(--gold); margin:18px auto; opacity:.6; }
-.ev-time{ font-size:clamp(15px,3.8vw,18px); font-style:italic; color:var(--ink-soft); margin-bottom:6px; }
+.ev-time{ font-size:clamp(17px,4.2vw,21px); font-weight:600; font-style:italic; color:var(--ink); margin-bottom:6px; }
 [data-lang="ml"] .ev-time{ font-style:normal; font-family:var(--mal); }
 .ev-venue{ font-size:clamp(20px,5vw,26px); font-weight:500; color:var(--ink); }
 [data-lang="ml"] .ev-venue{ font-family:var(--mal); }
